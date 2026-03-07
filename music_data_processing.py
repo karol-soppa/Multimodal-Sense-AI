@@ -12,21 +12,20 @@ from sklearn.preprocessing import LabelEncoder
 
 
 def extract_spectrogram(file_path, IMG_HEIGHT):
-    try:
+    audio, sr = librosa.load(file_path, sr=16000)
 
-        audio, sr = librosa.load(file_path, duration=1.0, sr=16000)
+    audio, _ = librosa.effects.trim(audio, top_db=20)
 
-        if len(audio) < 16000:
-            audio = np.pad(audio, (0, 16000 - len(audio)))
-            
-        mel_spec = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=IMG_HEIGHT)
+    if len(audio) > 16000:
+        audio = audio[:16000]
+    elif len(audio) < 16000:
+        audio = np.pad(audio, (0, 16000 - len(audio))) 
 
-        log_mel_spec = librosa.power_to_db(mel_spec, ref=np.max)
-
-        log_mel_spec = (log_mel_spec - log_mel_spec.min()) / (log_mel_spec.max() - log_mel_spec.min() + 1e-6)
-        return log_mel_spec[..., np.newaxis] 
-    except Exception as e:
-        return None
+    mel_spec = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=IMG_HEIGHT)
+    log_mel_spec = librosa.power_to_db(mel_spec, ref=np.max)
+    log_mel_spec = (log_mel_spec - log_mel_spec.min()) / (log_mel_spec.max() - log_mel_spec.min() + 1e-6)
+        
+    return log_mel_spec[..., np.newaxis]
 
 def data_processing(DATASET_PATH, DIGITS, SAMPLES_PER_DIGIT, IMG_HEIGHT):
 
