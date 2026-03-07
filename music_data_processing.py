@@ -14,13 +14,23 @@ from sklearn.preprocessing import LabelEncoder
 def extract_spectrogram(file_path, IMG_HEIGHT):
     audio, sr = librosa.load(file_path, sr=16000)
 
-    audio, _ = librosa.effects.trim(audio, top_db=20)
+        # 2. Wycięcie ciszy (top_db na 30, żeby nie ucinać "S")
+    audio, _ = librosa.effects.trim(audio, top_db=30)
 
+        # 3. Dopasowanie do 1 sekundy (16000 próbek)
     if len(audio) > 16000:
         audio = audio[:16000]
     elif len(audio) < 16000:
-        audio = np.pad(audio, (0, 16000 - len(audio))) 
+        audio = np.pad(audio, (0, 16000 - len(audio)))
+            
+        # --- 4. HACKOWANIE SYSTEMU: Dodajemy sztuczny szum mikrofonowy! ---
+        # Używamy np.random.randn, które generuje losowy szum dla każdej próbki dźwięku
+    poziom_szumu = 0.01  # Jeśli 0.01 to za mało, możesz spróbować 0.02
+    szum = poziom_szumu * np.random.randn(len(audio))
+    audio = audio + szum  # Nakładamy szum na nasz czysty dźwięk
+        # -----------------------------------------------------------------
 
+        # 5. Generowanie spektrogramu
     mel_spec = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=IMG_HEIGHT)
     log_mel_spec = librosa.power_to_db(mel_spec, ref=np.max)
     log_mel_spec = (log_mel_spec - log_mel_spec.min()) / (log_mel_spec.max() - log_mel_spec.min() + 1e-6)
