@@ -1,14 +1,24 @@
-import os
-import sys
+from text_processing import text_processing
+from tokens import tokens
+from text_processing import *
+from tokens import *
 
-# Dodajemy ścieżki do plików DLL Twojej karty bezpośrednio do działającego skryptu
-cuda_path = r"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\bin"
-cudnn_path = r"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\libnvvp" # sprawdź czy masz ten folder
 
-if os.path.exists(cuda_path):
-    os.add_dll_directory(cuda_path)
-    print("Zlokalizowano CUDA 12.1!")
+def get_max_length(dictionary):
+    max_l = 0
+    for captions in dictionary.values():
+        for cap in captions:
+            if len(cap) > max_l:
+                max_l = len(cap)
+    return max_l
 
-import tensorflow as tf
-print("--- WYNIK TESTU ---")
-print("Urządzenia:", tf.config.list_physical_devices('GPU'))
+#dictionary = text_processing('C:\\Users\\Karol\\Documents\\nauka_ai\\Multimodal-Sense-AI\\Multimodal-Sense-AI\\captions.txt')
+#dictionary = tokens(dictionary)
+
+#max_l = get_max_length(dictionary)
+#print(f"Najdłuższe zdanie ma: {max_l} tokenów")
+
+dictionary = text_processing(r'.\\captions.txt')
+tokenizer = tokens_feeding(dictionary)
+dictionary = tokens(dictionary)
+final = tokens_with_padding(dictionary, tokenizer)
