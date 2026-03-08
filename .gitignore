@@ -39,3 +39,6 @@ env/
 *.bin
 *.class
 *.jar
+
+.Images/
+*.jpg
