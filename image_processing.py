@@ -14,7 +14,7 @@ def data_import(path):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         if image is not None:
-            new_image = cv2.resize(image, (224,224))
+            new_image = cv2.resize(image, (299,299))
             img_array.append(new_image)
             img_label.append(img)
 
