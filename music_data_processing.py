@@ -21,12 +21,10 @@ def extract_spectrogram(file_path, IMG_HEIGHT):
     elif len(audio) < 16000:
         audio = np.pad(audio, (0, 16000 - len(audio)))
 
-    poziom_szumu = 0.01  # Jeśli 0.01 to za mało, możesz spróbować 0.02
-    szum = poziom_szumu * np.random.randn(len(audio))
-    audio = audio + szum  # Nakładamy szum na nasz czysty dźwięk
-        # -----------------------------------------------------------------
+    noise_level = 0.01  
+    noise = noise_level * np.random.randn(len(audio))
+    audio = audio + noise
 
-        # 5. Generowanie spektrogramu
     mel_spec = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=IMG_HEIGHT)
     log_mel_spec = librosa.power_to_db(mel_spec, ref=np.max)
     log_mel_spec = (log_mel_spec - log_mel_spec.min()) / (log_mel_spec.max() - log_mel_spec.min() + 1e-6)
