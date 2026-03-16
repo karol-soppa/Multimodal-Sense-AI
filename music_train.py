@@ -7,7 +7,7 @@ import keras
 from keras import layers, models
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-import matplotlib.pyplot as plt # <-- DODANA BIBLIOTEKA DO RYSOWANIA
+import matplotlib.pyplot as plt 
 from music_data_processing import data_processing, extract_spectrogram
 from music_neural_network import msn
 
@@ -26,15 +26,11 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy', 
               metrics=['accuracy'])
 
-# --- 4. TRENOWANIE ---
-print(f"\nRozpoczynam trenowanie na {len(X_train)} próbkach...")
 model.fit(X_train, y_train, epochs=15, batch_size=32, 
           validation_data=(X_test, y_test))
 
-# --- 5. FINALNY WYNIK ---
 loss, acc = model.evaluate(X_test, y_test, verbose=0)
-print(f"\n✅ FINALNE ACCURACY: {acc*100:.2f}%")
 
 model.save("audio_model_v1.h5")
-print("Model zapisany.")
+
 
