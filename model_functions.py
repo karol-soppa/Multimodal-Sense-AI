@@ -84,8 +84,7 @@ def generate_caption(model, tokenizer, photo_path, max_length=38):
         img = np.expand_dims(img, axis=0)
         img = preprocess_input(img.astype(np.float32))
         photo_feature = feat_model.predict(img, verbose=0)
-    else:
-        return "Błąd ładowania obrazu"
+
 
     in_text = 'startseq'
     for i in range(max_length):
