@@ -11,7 +11,7 @@ A deep learning framework designed for **unified perception** by integrating vis
 
 ## Project Structure & File Descriptions
 
-* **`Multimodal-Sense-AI.ipynb`**: Primary development environment containing the end-to-end workflow, model training loops, and fusion strategy evaluation.
+* **`main.py`** (lub Twoja nazwa pliku): The core execution script that orchestrates the data flow, model initialization, and the multimodal inference process.
 * **`music_neural_network.py`**: Implementation of a specialized neural network architecture for high-level acoustic feature extraction.
 * **`/models`**: Directory containing specialized encoder architectures for Vision and Natural Language Processing (NLP).
 * **`/preprocessing`**: Utility scripts for MFCC extraction, image normalization, and text tokenization.
